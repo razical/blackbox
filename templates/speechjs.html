@@ -41,8 +41,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Speech Recognition</title>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <style>
     
     #switches
@@ -61,7 +60,7 @@
     cursor: pointer;
     }
     
-        /* BOT */
+    /* BOT */
     @media only screen and (max-width: 600px) {
     #bot
     {
@@ -71,7 +70,6 @@
     -ms-transform: rotate(90deg);
     transform: rotate(90deg);
     }
-
     .face-box{
     height: 100vh;
     display: flex;
@@ -81,7 +79,6 @@
     align-items: center;
     row-gap: 60px!important;
     }
-
     .button {
     -webkit-transform: rotate(90deg);
     -moz-transform: rotate(90deg);
@@ -89,10 +86,7 @@
     -ms-transform: rotate(90deg);
     transform: rotate(90deg);
     }
-
     }
-
-
     #bot
     {
     position: relative;
@@ -105,13 +99,11 @@
     /*border: 1px solid lightblue;*/
     margin: 0 auto;
     }
-
     .face-box{
     display: flex;
     flex-direction: column;
     align-items: center;
     }
-
     .button{
     background-color: #a9a9a9;
     border: 2px solid #ffffff;
@@ -423,172 +415,147 @@
   <body style="background-color: black">
     <div class="face-box">
       <div id="container">
-      <div id="bot" class="neutral">
-        <div id="head">
-          <div id="left-ear">
-            <div id="left-ear-inner"></div>
-          </div>
-          <div id="face">
-            <div id="eyes">
-              <div id="left-eye"></div>
-              <div id="right-eye"></div>
+        <div id="bot" class="neutral">
+          <div id="head">
+            <div id="left-ear">
+              <div id="left-ear-inner"></div>
             </div>
-            <div id="mouth"></div>
-          </div>
-          <div id="right-ear">
-            <div id="right-ear-inner"></div>
+            <div id="face">
+              <div id="eyes">
+                <div id="left-eye"></div>
+                <div id="right-eye"></div>
+              </div>
+              <div id="mouth"></div>
+            </div>
+            <div id="right-ear">
+              <div id="right-ear-inner"></div>
+            </div>
           </div>
         </div>
-      </div>
-      <!-- <ul id="switches">
-        <li onmouseover="setStatus('')"> Neutral </li>
-        <li onmouseover="setStatus('speaking')"> Speaking </li>
-        <li onmouseover="setStatus('thinking')"> Thinking </li>
-        <li onmouseover="setStatus('listening')"> Listening </li>
-        <li onmouseover="setStatus('computing')"> Computing </li>
-      </ul> -->
+        <!-- <ul id="switches">
+          <li onmouseover="setStatus('')"> Neutral </li>
+          <li onmouseover="setStatus('speaking')"> Speaking </li>
+          <li onmouseover="setStatus('thinking')"> Thinking </li>
+          <li onmouseover="setStatus('listening')"> Listening </li>
+          <li onmouseover="setStatus('computing')"> Computing </li>
+        </ul> -->
       </div>
     </div>
-
-
     <script type="text/javascript">
     function setStatus(newstatus)
     {
     $("#bot").removeClass("speaking thinking listening computing");
     $("#bot").addClass(newstatus);
     }
-  
+    
     function StopTimeOut(t){
-      clearTimeout(t);
+    clearTimeout(t);
     }
-
-
-
- // bot idle loop
-function startIdleLoop() { 
-  let counter = 0; 
- 
-  const idle = setInterval(function () { 
-    if (counter % 2 === 0) { 
-      // If counter is even, set status to 'listening' 
-      setStatus('listening'); 
-    } else { 
-      // If counter is odd, set status to 'speaking' 
-      setStatus('thinking'); 
-    } 
-
- 
-    counter++; 
- 
-    // You can adjust the number of iterations or add a condition to stop the loop. 
-    // For example, stop after 10 iterations. 
-    // if (counter >= 10) { 
-    //   clearInterval(idle); 
-    // } 
-  }, 2000); 
-} 
- 
-// Call the function to start the loop 
-// startIdleLoop();
-
-/////////////////////
-
-
-function setRandomStatus() {
-  const statuses = ["thinking", "listening", "computing"];
-  const randomIndex = Math.floor(Math.random() * statuses.length);
-  const newStatus = statuses[randomIndex];
-
-  setStatus(newStatus);
-
-  // Use setInterval for consistent 2-second intervals
-  const intervalId = setInterval(setRandomStatus, 2000);
-
-  // Provide a way to clear the interval if needed
-  return intervalId;
-}
-
-
+    // bot idle loop
+    function startIdleLoop() {
+    let counter = 0;
+    
+    const idle = setInterval(function () {
+    if (counter % 2 === 0) {
+    // If counter is even, set status to 'listening'
+    setStatus('listening');
+    } else {
+    // If counter is odd, set status to 'speaking'
+    setStatus('thinking');
+    }
+    
+    counter++;
+    
+    // You can adjust the number of iterations or add a condition to stop the loop.
+    // For example, stop after 10 iterations.
+    // if (counter >= 10) {
+    //   clearInterval(idle);
+    // }
+    }, 2000);
+    }
+    
+    // Call the function to start the loop
+    // startIdleLoop();
+    /////////////////////
+    function setRandomStatus() {
+    const statuses = ["thinking", "listening", "computing"];
+    const randomIndex = Math.floor(Math.random() * statuses.length);
+    const newStatus = statuses[randomIndex];
+    setStatus(newStatus);
+    // Use setInterval for consistent 2-second intervals
+    const intervalId = setInterval(setRandomStatus, 2000);
+    // Provide a way to clear the interval if needed
+    return intervalId;
+    }
     
     function TalkToAssistant(){
     setStatus('listening')      ;
-
-
-
-          console.log('talk init');
-        // setting up the recognition service
-        const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
-        recognition.continuous = true;
-        recognition.interimResults = true;
-        recognition.lang = "en-IN";
-        let lastAddedFinalResultIndex = -1;
-        // setStatus('listening');
-        recognition.start();
-
-               function stopDictation(){
-                console.log('abort');
-      recognition.abort()
+    console.log('talk init');
+    // setting up the recognition service
+    const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.lang = "en-IN";
+    let lastAddedFinalResultIndex = -1;
+    // setStatus('listening');
+    recognition.start();
+    function stopDictation(){
+    console.log('abort');
+    recognition.abort()
     }
-
     function startDictation() {
-      recognition.start()
+    recognition.start()
     }
-
     function restartDictation() {
-  lastAddedFinalResultIndex = -1;
-  recognition && recognition.start();
-}
-        
-        
-        recognition.onresult  = (event) => {  
-            setStatus('computing');
-              const newMessages = [];
-              Array.from(event.results).forEach((result, resultIndex) => {
-              if (result.isFinal && resultIndex > lastAddedFinalResultIndex) {
-              lastAddedFinalResultIndex = resultIndex;
+    lastAddedFinalResultIndex = -1;
+    recognition && recognition.start();
+    }
+    
+    
+    recognition.onresult  = (event) => {
+          setStatus('computing');
+          const newMessages = [];
 
-              newMessages.push(result[0].transcript);
-              }
-              });
-              if (newMessages.length > 0) {
-              transcription = newMessages.join(" ").trim();
-              console.log(transcription);
-              console.log(newMessages);
-              stopDictation()
-              fetch('/speech?q=' + transcription)
-              .then(response => response.json())
-              .then(data => {
-              const text = data.text || '';
-              console.log(text);
-              setStatus('speaking');
-              utterance = new SpeechSynthesisUtterance(text)
-              utterance.speed = 1
-              speechSynthesis.speak(utterance)
-                utterance.onend = function(){
-                              setStatus('listening');
-                              // startDictation();
-                              restartDictation();
-
-                        };
-
-              
-              
-              })
-              .catch(error => console.error('Error fetching text:', error));
-              
-              }
-        };
-
-        
-        
-
-        // recognition.addEventListener('end', () => {
-        //     recognition.start();
-        //    });
-      }
-
+          Array.from(event.results).forEach((result, resultIndex) => {
+          if (result.isFinal && resultIndex > lastAddedFinalResultIndex) {
+          lastAddedFinalResultIndex = resultIndex;
+          newMessages.push(result[0].transcript);
+          }
+          });
+          if (newMessages.length > 0) {
+          transcription = newMessages.join(" ").trim();
+          console.log(transcription);
+          console.log(newMessages);
+          stopDictation()
+          fetch('/speech?q=' + transcription)
+          .then(response => response.json())
+          .then(data => {
+          const text = data.text || '';
+          console.log(text);
+          setStatus('speaking');
+          utterance = new SpeechSynthesisUtterance(text)
+          utterance.speed = 1
+          speechSynthesis.speak(utterance)
+          utterance.onend = function(){
+          setStatus('listening');
+          // startDictation();
+          restartDictation();
+          };
+          
+    
+    })
+    .catch(error => console.error('Error fetching text:', error));
+    
+    }
+    };
+    
+    
+    // recognition.addEventListener('end', () => {
+    //     recognition.start();
+    //    });
+    }
     document.querySelector('#bot').addEventListener('click', () => {
-       TalkToAssistant()
+    TalkToAssistant()
     })
     </script>
     
