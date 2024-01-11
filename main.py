@@ -27,6 +27,11 @@ tts_route = APIRouter()
 @general_pages_router.get("/")
 async def home(request: Request):
 	return templates.TemplateResponse("/speechjs.html",{"request":request})
+
+
+@general_pages_router.get("/amin")
+async def home(request: Request):
+	return templates.TemplateResponse("/speechjs_amin.html",{"request":request})
 	
 
 

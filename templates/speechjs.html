@@ -526,7 +526,9 @@
           transcription = newMessages.join(" ").trim();
           console.log(transcription);
           console.log(newMessages);
+
           stopDictation()
+          
           fetch('/speech?q=' + transcription)
           .then(response => response.json())
           .then(data => {

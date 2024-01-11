@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech Recognition</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        #image, #gif {
+            display: grid;
+            height: 100%;
+                -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg);
+        }
+        #image, #gif {
+            max-width: 90%;
+            max-height: 90vh;
+            margin: auto;
+                -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg);
+        }
+    </style>
+    <!-- <link rel="prefetch" href="https://im4.ezgif.com/tmp/ezgif-4-cdaed2bf88.gif" /> -->
+
+  </head>
+  <body style="background-color: black">
+
+<!--       <img id="media" src="https://res.cloudinary.com/dhkyvaqqx/image/upload/v1704976785/videoshot_wrxdun.jpg" alt="Image"> -->
+      <img id="image" src="https://res.cloudinary.com/dhkyvaqqx/image/upload/v1704981282/imageNew_tbsmgc.gif" alt="Image">
+      <img id="gif" src="https://res.cloudinary.com/dhkyvaqqx/image/upload/v1704981002/newgif_ekptto.gif" alt="Image" >
+
+  <br>
+
+
+
+  <script>
+    function idle(){
+        $('#gif').hide()
+        $('#image').show()
+    }
+
+    function talk(){
+        $('#image').hide()
+        $('#gif').show()
+    }
+    idle();
+  </script>
+
+    <script type="text/javascript">
+    
+    
+    function TalkToAssistant(){      ;
+    console.log('talk init');
+    // setting up the recognition service
+    const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.lang = "en-IN";
+    let lastAddedFinalResultIndex = -1;
+    // setStatus('listening');
+    recognition.start();
+    function stopDictation(){
+    console.log('abort');
+    recognition.abort()
+    }
+    function startDictation() {
+    recognition.start()
+    }
+    function restartDictation() {
+    lastAddedFinalResultIndex = -1;
+    recognition && recognition.start();
+    }
+    
+    
+    recognition.onresult  = (event) => {
+        console.log('rec init')
+
+          const newMessages = [];
+
+          Array.from(event.results).forEach((result, resultIndex) => {
+          if (result.isFinal && resultIndex > lastAddedFinalResultIndex) {
+          lastAddedFinalResultIndex = resultIndex;
+          newMessages.push(result[0].transcript);
+          }
+          });
+          if (newMessages.length > 0) {
+          transcription = newMessages.join(" ").trim();
+          console.log(transcription);
+          console.log(newMessages);
+
+          stopDictation()
+          
+          fetch('/speech?q=' + transcription)
+          .then(response => response.json())
+          .then(data => {
+          const text = data.text || '';
+          console.log(text);
+          talk();
+          utterance = new SpeechSynthesisUtterance(text)
+          utterance.speed = 1
+          speechSynthesis.speak(utterance)
+          utterance.onend = function(){
+          idle();
+          // startDictation();
+          restartDictation();
+          };
+          
+    
+    })
+    .catch(error => console.error('Error fetching text:', error));
+    
+    }
+    };
+    
+    
+    // recognition.addEventListener('end', () => {
+    //     recognition.start();
+    //    });
+    }
+    document.querySelector('#image').addEventListener('click', () => {
+    TalkToAssistant()
+    })
+    </script>
+    
+    
+   
+  </body>
+</html>
