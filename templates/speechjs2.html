@@ -1,0 +1,71 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Speech Recognition</title>
+</head>
+<body>
+  <button onclick="stopSpeechRecognition()">Stop Speech Recognition</button>
+
+  <script>
+    let recognition = new webkitSpeechRecognition();
+    let recordedSpeech = '';
+
+    recognition.onresult = function(event) {
+      const transcript = event.results[0][0].transcript;
+      recordedSpeech += transcript;
+
+      // Automatically fetch text and play back when speech is transcribed
+      fetchTextAndPlayBack();
+      console.log(recordedSpeech);
+    };
+
+    recognition.start(); // Start listening when the page loads
+
+    function stopSpeechRecognition() {
+      recognition.stop();
+    }
+
+    function fetchTextAndPlayBack() {
+      fetch('http://localhost:8000/speech')
+        .then(response => response.json())
+        .then(data => {
+          const text = data.text || '';
+          const synthesis = new SpeechSynthesisUtterance(text);
+          window.speechSynthesis.speak(synthesis);
+        })
+        .catch(error => console.error('Error fetching text:', error));
+    }
+  </script>
+</body>
+</html>
+ -->
+
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Speech Recognition</title>
+</head>
+<body>
+ <button>Computer, say something!</button>
+  <script>
+const say = text => speechSynthesis.speak(new SpeechSynthesisUtterance(text))
+
+function play() {
+  say(`Something new`)
+}
+
+play();
+
+
+document.querySelector('button').addEventListener('click', () => {
+  say(`Something!`)
+})
+
+  </script>
+
+</body>
+</html>
