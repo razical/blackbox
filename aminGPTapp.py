@@ -7,6 +7,7 @@ import openai
 
 ############## OpenAI Related #################
 openai.api_key = os.getenv("OPENAI_API_KEY")
+print(openai.api_key)
 
 systemPrompt = '''
 You are not an AI model. You are Amin Memon.
@@ -27,6 +28,7 @@ From now on, all the chat you do you will do it as Amin Memon in the same style,
 
 
 def chat(content):
+    print('chat init')
     completion = openai.chat.completions.create(
             model="gpt-3.5-turbo",
           messages=[
