@@ -554,7 +554,7 @@ function setRandomStatus() {
               console.log(transcription);
               console.log(newMessages);
               stopDictation()
-              fetch('http://localhost:8000/speech?q=' + transcription)
+              fetch('/speech?q=' + transcription)
               .then(response => response.json())
               .then(data => {
               const text = data.text || '';
