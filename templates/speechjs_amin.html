@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -39,55 +38,55 @@
 
   </head>
   <body style="background-color: black">
-    <div id="fullscreen-element" class="image-box">  
-    <img id="image" src="https://res.cloudinary.com/dhkyvaqqx/image/upload/v1704981282/imageNew_tbsmgc.gif" alt="Image"> 
-    <img id="gif" src="https://res.cloudinary.com/dhkyvaqqx/image/upload/v1704981002/newgif_ekptto.gif" alt="Image"> 
-</div> 
- 
-<script> 
-    const imageElement = document.getElementById('image'); 
-    const fullscreenElement = document.getElementById('fullscreen-element'); 
-    let isFullscreen = false; 
- 
-    imageElement.addEventListener('click', function() { 
-        toggleFullscreen(fullscreenElement); 
-    }); 
- 
-    function toggleFullscreen(elem) { 
-        if (document.fullscreenElement  document.mozFullScreenElement || document.msFullscreenElement) { 
-            //exitFullscreen(); 
-        } else { 
-            requestFullscreen(elem); 
-        } 
-    } 
- 
-    function requestFullscreen(elem) { 
-        if (elem.requestFullscreen) { 
-            elem.requestFullscreen(); 
-        } else if (elem.webkitRequestFullscreen) { 
-            elem.webkitRequestFullscreen(); 
-        } else if (elem.mozRequestFullScreen) { 
-            elem.mozRequestFullScreen(); 
-        } else if (elem.msRequestFullscreen) { 
-            elem.msRequestFullscreen(); 
-        } 
-        isFullscreen = true; 
-        console.log('Entered fullscreen'); 
-    } 
- 
-    function exitFullscreen() { 
-        if (document.exitFullscreen) { 
-            document.exitFullscreen(); 
-        } else if (document.webkitExitFullscreen) { 
-            document.webkitExitFullscreen(); 
-        } else if (document.mozCancelFullScreen) { 
-            document.mozCancelFullScreen(); 
-        } else if (document.msExitFullscreen) { 
-            document.msExitFullscreen(); 
-        } 
-        isFullscreen = false; 
-        console.log('Exited fullscreen'); 
-    } 
+   <div id="fullscreen-element" class="image-box"> 
+    <img id="image" src="https://res.cloudinary.com/dhkyvaqqx/image/upload/v1704981282/imageNew_tbsmgc.gif" alt="Image">
+    <img id="gif" src="https://res.cloudinary.com/dhkyvaqqx/image/upload/v1704981002/newgif_ekptto.gif" alt="Image">
+</div>
+
+<script>
+    const imageElement = document.getElementById('image');
+    const fullscreenElement = document.getElementById('fullscreen-element');
+    let isFullscreen = false;
+
+    imageElement.addEventListener('click', function() {
+        toggleFullscreen(fullscreenElement);
+    });
+
+    function toggleFullscreen(elem) {
+        if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement) {
+            //exitFullscreen();
+        } else {
+            requestFullscreen(elem);
+        }
+    }
+
+    function requestFullscreen(elem) {
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+        } else if (elem.webkitRequestFullscreen) {
+            elem.webkitRequestFullscreen();
+        } else if (elem.mozRequestFullScreen) {
+            elem.mozRequestFullScreen();
+        } else if (elem.msRequestFullscreen) {
+            elem.msRequestFullscreen();
+        }
+        isFullscreen = true;
+        console.log('Entered fullscreen');
+    }
+
+    function exitFullscreen() {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+        } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+        }
+        isFullscreen = false;
+        console.log('Exited fullscreen');
+    }
 </script>
   <br/>
 
@@ -208,3 +207,4 @@
    
   </body>
 </html>
+
