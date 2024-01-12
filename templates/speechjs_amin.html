@@ -36,12 +36,9 @@
     }
 
     </style>
-    <!-- <link rel="prefetch" href="https://im4.ezgif.com/tmp/ezgif-4-cdaed2bf88.gif" /> -->
 
   </head>
   <body style="background-color: black">
-
-<!--       <img id="media" src="https://res.cloudinary.com/dhkyvaqqx/image/upload/v1704976785/videoshot_wrxdun.jpg" alt="Image"> -->
     <div class="image-box"> 
         <img id="image" src="https://res.cloudinary.com/dhkyvaqqx/image/upload/v1704981282/imageNew_tbsmgc.gif" alt="Image">
        <img id="gif" src="https://res.cloudinary.com/dhkyvaqqx/image/upload/v1704981002/newgif_ekptto.gif" alt="Image" >
@@ -52,6 +49,7 @@
 
 
   <script>
+    // animation for the talking head
     function idle(){
         $('#gif').hide()
         $('#image').show()
@@ -65,75 +63,94 @@
   </script>
 
     <script type="text/javascript">
+        var micon = false
+
+        // reenable mic on android device
+        function enableMicAndroid(){
+            console.log('enableMicAndroid')
+            if (micon === false){
+                recognition.start();
+            }
+        }
+
+        var intervalId = window.setInterval(function(){
+              // call your function here
+              enableMicAndroid();
+            }, 2000);
     
-    
+    // init speech recognition & assistant
     function TalkToAssistant(){      ;
-    console.log('talk init');
-    // setting up the recognition service
-    const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
-    recognition.continuous = false;
-    recognition.interimResults = false;
-    recognition.lang = "en-IN";
-    let lastAddedFinalResultIndex = -1;
-    // setStatus('listening');
-    recognition.start();
-    function stopDictation(){
-    console.log('abort');
-    recognition.abort()
-    }
-    function startDictation() {
-    recognition.start()
-    }
-    function restartDictation() {
-    lastAddedFinalResultIndex = -1;
-    recognition && recognition.start();
-    }
-    
-    
-    recognition.onresult  = (event) => {
-        console.log('rec init')
+        console.log('talk init');
 
-          const newMessages = [];
+        // setting up the recognition service
+        const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.lang = "en-IN";
+        let lastAddedFinalResultIndex = -1;
 
-          Array.from(event.results).forEach((result, resultIndex) => {
-          if (result.isFinal && resultIndex > lastAddedFinalResultIndex) {
-          lastAddedFinalResultIndex = resultIndex;
-          newMessages.push(result[0].transcript);
-          }
-          });
-          if (newMessages.length > 0) {
-          transcription = newMessages.join(" ").trim();
-          console.log(transcription);
-          console.log(newMessages);
+        // start recognition
+        recognition.start();
+        micon = true
 
-          stopDictation()
-          
-          fetch('/speech?q=' + transcription)
-          .then(response => response.json())
-          .then(data => {
-          const text = data.text || '';
-          console.log(text);
-          talk();
-          utterance = new SpeechSynthesisUtterance(text)
-          utterance.speed = 1
-          speechSynthesis.speak(utterance)
-          utterance.onend = function(){
-          idle();
-          // startDictation();
-          restartDictation();
-          };
-          
-    
-    })
-    .catch(error => console.error('Error fetching text:', error));
-    
-    }
-    };
-    
-    
-    // recognition.addEventListener('end', () => {
-    //     recognition.start();
-    //    });
+        function stopDictation(){
+            console.log('abort');
+            recognition.abort()
+        }
+
+        function startDictation() {
+            recognition.start()
+        }
+
+        function restartDictation() {
+            lastAddedFinalResultIndex = -1;
+            recognition && recognition.start();
+        }
+        
+        // when audio is received
+        recognition.onresult  = (event) => {
+                micon = true
+                console.log('rec init')
+
+              const newMessages = [];
+
+              Array.from(event.results).forEach((result, resultIndex) => {
+              if (result.isFinal && resultIndex > lastAddedFinalResultIndex) {
+              lastAddedFinalResultIndex = resultIndex;
+              newMessages.push(result[0].transcript);
+              }
+              });
+              if (newMessages.length > 0) {
+              transcription = newMessages.join(" ").trim();
+              console.log(transcription);
+              console.log(newMessages);
+
+              stopDictation()
+
+              
+              fetch('/speech?q=' + transcription)
+              .then(response => response.json())
+              .then(data => {
+              const text = data.text || '';
+              console.log(text);
+              talk();
+              utterance = new SpeechSynthesisUtterance(text)
+              utterance.speed = 1
+              speechSynthesis.speak(utterance)
+              utterance.onend = function(){
+              idle();
+              // startDictation();
+              restartDictation();
+              micon = false;
+              };
+              
+        
+        })
+        .catch(error => console.error('Error fetching text:', error));
+        
+        }
+        };
+        
     }
     document.querySelector('#image').addEventListener('click', () => {
     TalkToAssistant()
