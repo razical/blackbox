@@ -63,7 +63,11 @@
   </script>
 
     <script type="text/javascript">
-        var micon = false
+       
+    // init speech recognition & assistant
+    function TalkToAssistant(){      ;
+
+         var micon = false
 
         // reenable mic on android device
         function enableMicAndroid(){
@@ -78,8 +82,6 @@
               enableMicAndroid();
             }, 2000);
     
-    // init speech recognition & assistant
-    function TalkToAssistant(){      ;
         console.log('talk init');
 
         // setting up the recognition service
