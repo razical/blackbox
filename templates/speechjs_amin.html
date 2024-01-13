@@ -111,21 +111,9 @@
     // init speech recognition & assistant
     function TalkToAssistant(){      ;
 
-         var micon = false
+  
 
-        // reenable mic on android device
-        function enableMicAndroid(){
-            console.log('enableMicAndroid')
-            if (micon === false){
-                recognition.start();
-            }
-        }
 
-        // var intervalId = window.setInterval(function(){
-        //       // call your function here
-        //       enableMicAndroid();
-        //     }, 2000);
-    
         console.log('talk init');
 
         // setting up the recognition service
@@ -136,8 +124,7 @@
         let lastAddedFinalResultIndex = -1;
 
         // start recognition
-        recognition.start();
-        micon = true
+        
 
         function stopDictation(){
             console.log('abort');
@@ -189,6 +176,8 @@
               restartDictation();
               micon = false;
               };
+
+
               
         
         })
@@ -196,6 +185,8 @@
         
         }
         };
+
+        recognition.start();
         
     }
     document.querySelector('#image').addEventListener('click', () => {
