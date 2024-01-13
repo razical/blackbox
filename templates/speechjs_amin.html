@@ -118,8 +118,8 @@
 
         // setting up the recognition service
         const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
-        recognition.continuous = true;
-        recognition.interimResults = true;
+        recognition.continuous = false;
+        recognition.interimResults = false;
         recognition.lang = "en-IN";
         let lastAddedFinalResultIndex = -1;
 
